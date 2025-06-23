@@ -8,7 +8,7 @@ require 'pg'
 require 'logger'
 require 'dotenv/load'
 require 'active_record'
-require_relative 'price_calculator' # Requerir el archivo price_calculator.rba
+require_relative 'price_calculator' # Requerir el archivo price_calculator.rba 2
 require 'rack/cors'
 
 use Rack::Cors do

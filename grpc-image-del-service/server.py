@@ -6,7 +6,7 @@ from pymongo import MongoClient
 import gridfs
 from bson import ObjectId
 
-# URI corregida para MongoDB remoto en tu servidor Docker
+# URI corregida para MongoDB remoto en tu servidor Docker 2
 MONGO_URI = "mongodb://admin:admin123@35.168.99.213:27017/CatalogServiceDB?authSource=admin"
 client = MongoClient(MONGO_URI)
 db = client["CatalogServiceDB"]

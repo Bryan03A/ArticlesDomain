@@ -81,7 +81,7 @@ def delete_model(model_name):
             return jsonify({"error": "Model not found"}), 404
         user_name = check_model_owner(model['_id'])  # Pasar _id, no user_id
         if not user_name:
-            return jsonify({"error": "Unauthorized"}), 403  # Only owner can delete
+            return jsonify({"error": "Unauthorized"}), 403  # Only owner can delete 3
         result = models_collection.delete_one({"name": model_name})
         if result.deleted_count > 0:
             return jsonify({"message": "Model deleted successfully"}), 200

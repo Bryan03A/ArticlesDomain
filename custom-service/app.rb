@@ -17,7 +17,7 @@ use Rack::Cors do
     resource '*',
       headers: :any,
       methods: [:get, :post, :put, :delete, :options],
-      credentials: true # Permitir credenciales (cookies, headers de autenticación)
+      credentials: true # Permitir credenciales (cookies, headers de autenticación) 2
   end
 end
 
