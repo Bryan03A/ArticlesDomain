@@ -6,10 +6,10 @@ from pymongo import MongoClient
 import gridfs
 from bson import ObjectId
 
-# Conectar a MongoDB
-MONGO_URI = "mongodb+srv://MicroserviceDev:1997999@cluster0.hdqpd.mongodb.net/CatalogServiceDB?retryWrites=true&w=majority"
+# URI corregida para MongoDB remoto en tu servidor Docker
+MONGO_URI = "mongodb://admin:admin123@35.168.99.213:27017/CatalogServiceDB?authSource=admin"
 client = MongoClient(MONGO_URI)
-db = client.CatalogServiceDB
+db = client["CatalogServiceDB"]
 fs = gridfs.GridFS(db)
 
 class ImageService(image_service_pb2_grpc.ImageServiceServicer):
