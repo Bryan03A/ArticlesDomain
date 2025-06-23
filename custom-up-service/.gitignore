@@ -17,10 +17,6 @@ tmp/
 # Ignorar el archivo .env (configuración de variables de entorno)
 .env
 
-# Ignorar archivos de Docker
-Dockerfile
-docker-compose.yml
-
 # Ignorar directorios de dependencias de Ruby
 /vendor/bundle
 
