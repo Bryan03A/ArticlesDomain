@@ -1,0 +1,66 @@
+name: Build, Push, and Deploy All Microservices Sequentially
+
+on:
+  push:
+    branches:
+      - main
+      - test
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            REPO_CODE="https://github.com/Bryan03A/ArticlesDomain.git"
+            REPO_ENVS="https://${{ secrets.ENV_REPO_TOKEN }}@github.com/Bryan03A/ArticlesDomain-envs.git"
+
+            mkdir -p ~/deploy-code
+            mkdir -p ~/deploy-envs
+
+            cd ~/deploy-code
+            if [ -d "ArticlesDomain" ]; then
+              cd ArticlesDomain && git pull origin test && cd ..
+            else
+              git clone -b test $REPO_CODE
+            fi
+
+            cd ~/deploy-envs
+            if [ -d "ArticlesDomain-envs" ]; then
+              cd ArticlesDomain-envs && git pull origin main && cd ..
+            else
+              git clone $REPO_ENVS
+            fi
+
+            if [ -d ~/deploy-envs/ArticlesDomain-envs/ArticlesDomain ]; then
+              cp -r -f ~/deploy-envs/ArticlesDomain-envs/ArticlesDomain/* ~/deploy-code/ArticlesDomain/
+            fi
+
+            docker login -u bfury0329 -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
+
+            docker network inspect app-network >/dev/null 2>&1 || docker network create app-network
+
+            cd ~/deploy-code/ArticlesDomain
+
+            for dir in */ ; do
+              service=$(basename "$dir")
+              if [ -f "$dir/Dockerfile" ]; then
+                echo "Procesando $service..."
+                docker build -t bfury0329/${service}:latest "./$dir"
+                docker push bfury0329/${service}:latest
+                docker rm -f "${service}" 2>/dev/null || true
+
+                port=$(grep -i '^EXPOSE' "$dir/Dockerfile" | head -n 1 | awk '{print $2}')
+                if [ -z "$port" ]; then
+                  port=7000
+                fi
+
+                docker run -d --name "${service}" --network app-network -p ${port}:${port} bfury0329/${service}:latest
+              fi
+            done
