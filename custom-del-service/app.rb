@@ -12,7 +12,7 @@ require 'rack/cors'
 
 use Rack::Cors do
   allow do
-    origins '*' # Puedes cambiar '*' por el dominio específico si deseas restringir más el acceso
+    origins '*' # Puedes cambiar '*' por el dominio específico si deseas restringir más el acceso a
     resource '*', headers: :any, methods: [:get, :post, :put, :delete, :options]
   end
 end

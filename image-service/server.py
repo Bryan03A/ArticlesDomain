@@ -14,7 +14,7 @@ app = Flask(__name__)
 # Configuración de CORS para permitir solicitudes desde cualquier origen
 CORS(app, origins=["http://3.212.132.24:8080"], supports_credentials=True)
 
-# Conexión a MongoDB en Docker local
+# Conexión a MongoDB en Docker local aaa
 client = MongoClient("mongodb://admin:admin123@mongo-db:27017/CatalogServiceDB?authSource=admin")
 db = client["CatalogServiceDB"]
 fs = gridfs.GridFS(db)

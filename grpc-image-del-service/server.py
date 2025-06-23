@@ -17,7 +17,7 @@ class ImageService(image_service_pb2_grpc.ImageServiceServicer):
         try:
             model_id = request.model_id
 
-            # Buscar la imagen en la colección "images"
+            # Buscar la imagen en la colección "images" aa
             image_doc = db.images.find_one({"model_id": model_id})
             if not image_doc:
                 return image_service_pb2.DeleteImageResponse(success=False, message="Image not found")

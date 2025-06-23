@@ -90,7 +90,7 @@ def delete_model(model_name):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Route to delete a 3D model by its ID
+# Route to delete a 3D model by its ID 2
 @app.route("/models/id/<string:model_id>", methods=["DELETE"])
 def delete_model_by_id(model_id):
     try:
