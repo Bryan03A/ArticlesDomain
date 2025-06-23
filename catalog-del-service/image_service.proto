@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package image_service;
+
+service ImageService {
+    rpc DeleteImageByModelId (DeleteImageRequest) returns (DeleteImageResponse);
+}
+
+message DeleteImageRequest {
+    string model_id = 1;
+}
+
+message DeleteImageResponse {
+    bool success = 1;
+    string message = 2;
+}

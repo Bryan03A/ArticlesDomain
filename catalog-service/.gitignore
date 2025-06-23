@@ -1,0 +1,25 @@
+# Ignore virtual environment files
+.env
+
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore virtual environment folder
+venv/
+
+# Ignorar el archivo .env que contiene variables sensibles
+.env
+
+# Ignore editor configuration files (optional)
+.idea/
+.vscode/
+
+# Ignore installed dependencies in Python
+*.egg-info/
+
+.DS_Store
+
+*.git

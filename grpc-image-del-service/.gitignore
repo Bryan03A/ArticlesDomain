@@ -1,0 +1,18 @@
+# Ignorar archivos compilados de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignorar entorno virtual
+venv/
+.env
+
+
+# Ignorar dependencias instaladas en Docker
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Ignorar archivos de configuración del sistema operativo
+.DS_Store
+Thumbs.db

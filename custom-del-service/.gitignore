@@ -1,0 +1,28 @@
+# Ignorar archivos y carpetas de Ruby
+*.gem
+*.rbc
+.bundle/
+.config/
+log/
+tmp/
+
+# Ignorar archivos de base de datos
+*.sqlite3
+*.sqlite3-journal
+
+# Ignorar archivos de configuración de IDEs
+.idea/
+.vscode/
+
+# Ignorar el archivo .env (configuración de variables de entorno)
+.env
+
+# Ignorar archivos de Docker
+Dockerfile
+docker-compose.yml
+
+# Ignorar directorios de dependencias de Ruby
+/vendor/bundle
+
+# Ignorar dependencias de Node.js si tienes Node.js en el proyecto
+/node_modules/

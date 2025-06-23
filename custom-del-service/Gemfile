@@ -1,0 +1,19 @@
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+# gem "rails"
+
+gem 'sinatra'
+gem 'puma'
+gem 'mongo'
+gem 'pg'
+gem 'dotenv'  # Para manejar variables de entorno
+gem "rackup", "~> 2.2"
+gem 'jwt'
+gem 'bcrypt'
+gem 'json'
+gem 'net-http'
+gem 'activerecord'
+gem 'rack-cors'
+

@@ -1,0 +1,21 @@
+# Ignorar archivos temporales de Ruby
+*.gem
+*.rbc
+*.rvmrc
+.bundle/
+vendor/bundle/
+log/
+tmp/
+
+# Ignorar la base de datos de SQLite (si se usa en desarrollo)
+db/*.sqlite3
+db/*.sqlite3-journal
+
+# Ignorar los archivos de configuración de entornos locales
+.env
+
+# Ignorar los archivos generados por Ruby
+*.swp
+*.swo
+*.bak
+*.log

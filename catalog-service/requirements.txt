@@ -1,0 +1,6 @@
+pymongo
+Flask
+python-dotenv
+flask-cors
+PyJWT
+requests
