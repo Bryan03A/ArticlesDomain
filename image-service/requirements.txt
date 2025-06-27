@@ -4,3 +4,4 @@ pymongo
 flask
 pillow
 flask-cors
+dotenv
