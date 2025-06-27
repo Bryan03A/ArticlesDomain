@@ -11,10 +11,10 @@ from bson import ObjectId
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
 
 # Enable CORS to allow requests from localhost:8080 3 3
-CORS(app, origins=["http://3.212.132.24:8080", "http://98.83.63.33:5018", "http://98.83.63.33:5008"], supports_credentials=True)
+# CORS(app, origins=["http://3.212.132.24:8080", "http://98.83.63.33:5018", "http://98.83.63.33:5008"], supports_credentials=True)
 
 # MongoDB Configuration
 MONGO_URI = os.getenv("MONGO_URI")
