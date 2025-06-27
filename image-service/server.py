@@ -1,47 +1,53 @@
-from flask import Flask, request, jsonify, send_file  # Agregamos send_file
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
-import pymongo
 from pymongo import MongoClient
 from bson import ObjectId
-import base64
-from io import BytesIO
 from PIL import Image
 import gridfs
-import io  # Agregamos io
+import io
+import os
+from dotenv import load_dotenv
+
+# Cargar variables de entorno desde el archivo .env
+load_dotenv()
 
 app = Flask(__name__)
-
-# Configuración de CORS para permitir solicitudes desde cualquier origen
 # CORS(app, origins=["http://3.212.132.24:8080"], supports_credentials=True)
 
-# Conexión a MongoDB remota en Docker con IP pública
-client = MongoClient("mongodb://admin:admin123@35.168.99.213:27017/CatalogServiceDB?authSource=admin")
-db = client["CatalogServiceDB"]
+# Obtener configuración desde .env
+MONGO_HOST = os.getenv('MONGO_HOST', 'localhost')
+MONGO_PORT = int(os.getenv('MONGO_PORT', 27017))
+MONGO_DB = os.getenv('MONGO_DB', 'CatalogServiceDB')
+MONGO_USER = os.getenv('MONGO_USER')
+MONGO_PASSWORD = os.getenv('MONGO_PASSWORD')
+
+# Construir la URI de conexión
+mongo_uri = f"mongodb://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}/{MONGO_DB}?authSource=admin"
+
+# Conectarse a MongoDB
+client = MongoClient(mongo_uri)
+db = client[MONGO_DB]
 fs = gridfs.GridFS(db)
 
 @app.route('/upload', methods=['POST'])
 def upload_image():
     try:
-        # Verificamos si hay un archivo y el 'model_id' en el formulario
         if 'image' not in request.files:
             return jsonify({"error": "No image file provided"}), 400
 
         if 'model_id' not in request.form:
             return jsonify({"error": "Model ID is required"}), 400
 
-        # Obtenemos los datos del archivo y el 'model_id' de la solicitud
         image_file = request.files['image']
-        model_id = request.form['model_id']  # Usamos el model_id como el nombre del archivo
+        model_id = request.form['model_id']
 
-        # Guardamos la imagen en GridFS
         image_data = image_file.read()
-        file_id = fs.put(image_data, filename=f"{model_id}.jpg")  # Usamos el model_id como nombre
+        file_id = fs.put(image_data, filename=f"{model_id}.jpg")
 
-        # Guardamos la referencia de la imagen en la colección
         image_doc = {
             "name": f"{model_id}.jpg",
             "image_id": str(file_id),
-            "model_id": model_id  # También guardamos el model_id en la base de datos
+            "model_id": model_id
         }
         db.images.insert_one(image_doc)
 
@@ -52,7 +58,7 @@ def upload_image():
 @app.route('/images', methods=['GET'])
 def get_images():
     try:
-        images = list(db.images.find({}, {"_id": 0}))  # Obtener todas las imágenes
+        images = list(db.images.find({}, {"_id": 0}))
         return jsonify({"images": images}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -60,18 +66,14 @@ def get_images():
 @app.route('/image/<model_id>', methods=['GET'])
 def get_image_by_model_id(model_id):
     try:
-        # Buscar la referencia de la imagen en la colección
         image_doc = db.images.find_one({"model_id": model_id})
         if not image_doc:
             return jsonify({"error": "Image not found"}), 404
 
-        # Obtener la imagen de GridFS usando `image_id`
         image_id = image_doc["image_id"]
-        image_file = fs.get(ObjectId(image_id))  # Convertimos a ObjectId
+        image_file = fs.get(ObjectId(image_id))
 
-        # Enviar la imagen como respuesta
         return send_file(io.BytesIO(image_file.read()), mimetype='image/jpeg')
-
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
