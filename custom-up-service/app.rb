@@ -56,7 +56,7 @@ end
 
 # Function to verify the token with the auth-service
 def verify_token(token)
-  uri = URI.parse("http://54.90.161.226/auth/profile")
+  uri = URI.parse("http://3.224.44.87/auth/profile")
   req = Net::HTTP::Get.new(uri)
   req['Authorization'] = "Bearer #{token}"
 
