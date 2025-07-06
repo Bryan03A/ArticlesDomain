@@ -1,7 +1,0 @@
-grpcio
-grpcio-tools
-pymongo
-flask
-pillow
-flask-cors
-dotenv
