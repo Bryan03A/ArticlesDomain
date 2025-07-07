@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package image_service;
+
+// Definimos el servicio gRPC
+service ImageService {
+    rpc DeleteImageByModelId (DeleteImageRequest) returns (DeleteImageResponse);
+}
+
+// Solicitud para eliminar la imagen
+message DeleteImageRequest {
+    string model_id = 1;
+}
+
+// Respuesta de eliminación
+message DeleteImageResponse {
+    bool success = 1;
+    string message = 2;
+}
