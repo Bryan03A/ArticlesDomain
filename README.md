@@ -114,3 +114,60 @@
 
 ---
 
+## 9️⃣ **Custom Model Delete Service** (Ruby / Sinatra + MongoDB + PostgreSQL)
+
+- **🧠 Purpose**:  
+  Manages customized 3D models created by users, allowing retrieval of catalog models and secure deletion of customized models with authorization checks via an external auth-service. Combines document storage for base models with relational storage for customizations and their costs.
+
+- **🧪 Port**: `5012`
+
+- **🧰 Tech Stack**:  
+  - Language: Ruby  
+  - Framework: Sinatra  
+  - Databases: MongoDB (for catalog models), PostgreSQL (for customized models)  
+  - ORM: ActiveRecord for PostgreSQL  
+  - Auth: JWT token verification delegated to external auth-service via HTTP call  
+  - Middleware: Rack CORS (commented, configurable)  
+
+- **🛢️ Database**:  
+  - MongoDB stores base 3D models in `models` collection  
+  - PostgreSQL stores customized models in `customs` table with fields like `model_id`, `user_id`, `created_by`, `custom_params` (JSONB), `cost_initial`, `cost_final`, and timestamps  
+  - `customs` table auto-created if not existing  
+
+- **🔐 Security**:  
+  - Token passed in Authorization header is verified by an external `auth-service` endpoint (`/auth/profile`)  
+  - Only the user who created a custom model (`user_id`) can delete it  
+  - Proper HTTP error responses with status codes and JSON messages on invalid token, unauthorized access, or missing model  
+
+- **📡 Communication**: REST (JSON)  
+  - GET `/models` returns all base catalog models from MongoDB  
+  - DELETE `/customize-model/:id` deletes a customized model after validating JWT token and ownership  
+
+- **🌍 Endpoints**:
+
+  | Endpoint               | Method | Description                                  |
+  |------------------------|--------|----------------------------------------------|
+  | `/models`              | GET    | Retrieve all base 3D catalog models          |
+  | `/customize-model/:id` | DELETE | Delete customized model by ID (authorized users only) |
+
+- **🎨 Design Pattern**:  
+  - Separation of concerns with ActiveRecord handling PostgreSQL and Mongo Ruby driver for MongoDB  
+  - Token verification delegated to an external service for single source of truth on authentication  
+  - Error handling centralized in endpoint with proper status codes  
+
+- **🏗️ Architecture**:  
+  - Presentation Layer: Sinatra routes handling HTTP requests  
+  - Domain Layer: Token verification and authorization logic in helper method  
+  - Data Access Layer: MongoDB driver for catalog models and ActiveRecord for customized models  
+
+- **🛠️ Notes**:  
+  - Rack CORS middleware setup commented out but ready for use  
+  - Uses raw SQL to ensure `customs` table creation if absent  
+  - Deletes customized models only if ownership verified  
+  - Handles exceptions gracefully returning JSON error messages  
+  - Runs on port 5012, binds to all interfaces  
+  - Designed for maintainability and clear separation between catalog base models and customized instances
+
+---
+
+
