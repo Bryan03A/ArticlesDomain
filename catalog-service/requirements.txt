@@ -4,6 +4,3 @@ python-dotenv
 flask-cors
 PyJWT
 requests
-grpcio
-grpcio-tools
-protobuf

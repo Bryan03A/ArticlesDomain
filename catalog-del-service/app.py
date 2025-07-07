@@ -66,7 +66,7 @@ def home():
     return jsonify({"message": "Welcome to the Catalog Service!"})
 
 # Conectar al servicio gRPC
-channel = grpc.insecure_channel("localhost:5014")
+channel = grpc.insecure_channel("grpc-image-del-service:5014")
 stub = image_service_pb2_grpc.ImageServiceStub(channel)
 
 # Route to delete a 3D model by its name

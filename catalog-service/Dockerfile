@@ -13,9 +13,6 @@ COPY . /app/
 
 # Copy the .env file
 COPY .env /app/
-COPY image_service_pb2.py /app/
-COPY image_service_pb2_grpc.py /app/
-COPY proto/ /app/proto/
 
 # Expose the port on which the service will run
 EXPOSE 5003
